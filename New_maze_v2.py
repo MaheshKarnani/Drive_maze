@@ -1,7 +1,8 @@
 #new maze all on pi.
 #2021Nov
-#5th
+#11th
 import serial
+import keyboard
 import time
 import RPi.GPIO as GPIO
 import os
@@ -92,7 +93,7 @@ target11 = 60
 closel=(target0,target1,target2,target3,target4,target5,target6,target7,target8,target9,target10,target11)
 
 #initialize current and target degrees for doors
-current=[90,90,90,90,90,90,90,90,90,90,90,90]
+current=[96,96,96,96,96,96,96,96,96,96,96,96]
 target=[90,90,90,90,90,90,90,90,90,90,90,90]
 d_turn=1
 d_stroke=1
@@ -107,10 +108,13 @@ while True:
         target[doorl[0]] = openl[doorl[0]]
         if not GPIO.input(beaml[1]):
             mode=1
+            w=[]
     if mode==1: #SEM trapped for id
         target[doorl[0]] = closel[doorl[0]]
         target[doorl[1]] = closel[doorl[1]]
-        #id and scan
+        #id and wscan
+        if keyboard.is_pressed('q'):
+            w = int(input("Enter weight:"))
         if w<10:
             mode=0
         if w>40:
@@ -119,25 +123,25 @@ while True:
             mode=2
     if mode==2: #SEM open to maze
         target[doorl[1]] = openl[doorl[1]]
-        mode=3
-        leave_flag='False'  
+        #mode=3
+        maze_entry_flag='False'
     if mode==3: #maze operational
         print("in maze")
-        if not leave_flag and not GPIO.input(beaml[2]) or ...: #enter any unit
-            leave_flag='True'
+        if not maze_entry_flag and not GPIO.input(beaml[2]) or ...: #enter any unit
+            maze_entry_flag='True'
 
         if not GPIO.input(beaml[2]): #enter unit1
             target[doorl[2]] = closel[doorl[2]]
             target[doorl[3]] = openl[doorl[3]]
         if not GPIO.input(beaml[3]): #exit
             target[doorl[2]] = openl[doorl[2]]
-            target[doorl[3]] = closel[doorl[3]]        
+            target[doorl[3]] = closel[doorl[3]]
         if not GPIO.input(beaml[4]): #enter unit2
             target[doorl[4]] = closel[doorl[4]]
             target[doorl[5]] = openl[doorl[5]]
         if not GPIO.input(beaml[5]): #exit
             target[doorl[4]] = openl[doorl[4]]
-            target[doorl[5]] = closel[doorl[5]]   
+            target[doorl[5]] = closel[doorl[5]]
         if not GPIO.input(beaml[6]): #enter unit3
             target[doorl[6]] = closel[doorl[6]]
             target[doorl[7]] = openl[doorl[7]]
@@ -157,7 +161,7 @@ while True:
             target[doorl[10]] = openl[doorl[10]]
             target[doorl[11]] = closel[doorl[11]]   
         
-        if not GPIO.input(beaml[1]) and leave_flag: #leave maze
+        if not GPIO.input(beaml[1]) and maze_entry_flag: #leave maze
             target[doorl[0]] = openl[doorl[0]]
             target[doorl[1]] = closel[doorl[1]]
             mode=4
