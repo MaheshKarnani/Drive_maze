@@ -437,6 +437,7 @@ while True:
             food_flag=True
             GPIO.output(FED_in,False)
             pellets=0
+            food_delay=[]
         if food_flag and GPIO.input(FED_out): #rec delay to feed
             save.append_event("", "", "retrieve_pellet", animaltag) 
             food_delay=int(round(time.time() * 1000))-food_timer
@@ -482,6 +483,7 @@ while True:
             rec_licks_flag=True
             water_flag=True
             licks=0
+            drink_delay=[]
         if rec_licks_flag:
             #record licking
             if GPIO.input(lick_in_port):
