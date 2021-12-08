@@ -510,9 +510,10 @@ while True:
             target[doorl[1]] = closel[doorl[1]]
             save.append_event("", "", "block_end", animaltag) 
             scale_timer=int(round(time.time() * 1000))
+            another_entered=False
             mode=5
             print("m5")
-    if mode==5: #wait for exit
+    if mode==5: #wait for exit or entry of other
         millis = int(round(time.time() * 1000))
         if millis-scale_timer>scale_interval_scan:
             w = scale.getWeight() * 1000
@@ -524,6 +525,15 @@ while True:
             nest_timer=int(round(time.time() * 1000))
             mode=6
             print("m6")
+        if w>40:
+            another_entered=True
+            print("sub")
+        if another_entered and w<35 and w>10 and GPIO.input(beaml[1]):
+            mode=1
+            print("m1 sub")
+            w=int(10)
+            generic_timer=int(round(time.time() * 1000))
+            animal_found_flag=False
     if mode==6: #wait for nest choice time out
         millis = int(round(time.time() * 1000))
         if millis-nest_timer>nest_timeout:
