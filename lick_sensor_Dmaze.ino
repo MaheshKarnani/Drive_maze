@@ -25,6 +25,9 @@ void setup()
     }
     cs_thresh=(cs_thresh/5)+30;
     delay(1000);
+	digitalWrite(led, HIGH);
+	delay(200);
+	digitalWrite(led, LOW);
 //    Serial.print("cs_threshold   ");  //show value for trouble shooting if serial monitor is on
 //    Serial.println(cs_thresh); 
 }
