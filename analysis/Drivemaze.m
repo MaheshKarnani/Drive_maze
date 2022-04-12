@@ -15,7 +15,8 @@ clearvars -except a f1 f2 f3 f4 f5 animals binned b_trials b_dur binned_exp
 % animal=cellstr(table2cell(animals(a,1)));
 animal=animals;
 % filename=['C:\Data\Drivemaze\Drivemaze_imaging_grin1' animal{1, 1} '_events.csv'];
-filename=['C:\Users\cha206\Data\Exp_2_DM_exploration\1_Raw\' animal '_events.csv'];
+% filename=['C:\Users\cha206\Data\Exp_2_DM_exploration\1_Raw\' animal '_events.csv'];
+filename=['C:\Data\Drivemaze\Drivemaze_imaging_grin1\' animal '_events.csv'];
 %% Import csv
 opts = delimitedTextImportOptions("NumVariables", 4);
 opts.DataLines = [1, Inf];
