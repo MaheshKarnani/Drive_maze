@@ -41,7 +41,7 @@ safety_delay=2000 #ms delay to confirm putative maze exit
 #timestamp miniscope frames
 frame_in_port=5#10 
 pi.set_mode(frame_in_port, pigpio.INPUT)
-fc=pi.callback(frame_in_port)
+fc=pi.callback(frame_in_port,pigpio.EITHER_EDGE)
 fc.reset_tally()
 print(fc.tally())
 frame_counter=fc.tally()
@@ -105,9 +105,9 @@ beaml=(b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11)
 #set up gpio
 for x in range(0, 12):
     pi.set_mode(beaml[x], pigpio.INPUT) 
-    pi.set_mode(beaml[x], pigpio.PUD_DOWN) # Set an input pin and initial value to be pulled low (off)
-for x in [1,3,5,7,8,10,11]:
-    pi.set_mode(beaml[x], pigpio.INPUT)
+#     pi.set_mode(beaml[x], pigpio.PUD_DOWN) # Set an input pin and initial value to be pulled low (off)
+# for x in [1,3,5,7,8,10,11]:
+#     pi.set_mode(beaml[x], pigpio.INPUT)
 # for x in [10]:
 #     pi.set_mode(beaml[x], pigpio.INPUT)
 #     pi.set_mode(beaml[x], pigpio.PUD_UP)    
@@ -406,16 +406,16 @@ while True:
         if not pi.read(beaml[3]) and pod_entry_flag: #exit
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
+            exploration_consumed = int(round(time.time() * 1000))-unit1_timer
             save.append_event(exploration_consumed, "", "exit_explore", animaltag,frame_counter,tick)
             pod_entry_flag=False
             #print("ex1")
             close_door(4)
             open_door(3)
-            exploration_consumed = int(round(time.time() * 1000))-unit1_timer
         if not pi.read(beaml[4]) and not pod_entry_flag: #enter unit2
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
-            save.append_event("", "", "enter_run", animaltag)
+            save.append_event("", "", "enter_run", animaltag,frame_counter,tick)
             pod_entry_flag=True
             #print("unit2")
             close_door(5)
@@ -451,6 +451,7 @@ while True:
         if not pi.read(beaml[5]) and pod_entry_flag: #exit
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
+            revs=counter/cycle
             save.append_event(revs, latency_to_run, "exit_run", animaltag,frame_counter,tick)
             pod_entry_flag=False
             #print("ex2")
@@ -458,7 +459,6 @@ while True:
             open_door(5)
             rec_wheel_flag=False
             wheel_flag=False
-            revs=counter/cycle
         if not pi.read(beaml[6]) and not pod_entry_flag: #enter unit3
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
@@ -509,12 +509,12 @@ while True:
         if not pi.read(beaml[8]) and pod_entry_flag: #exit
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
+            social_consumed=int(round(time.time() * 1000))-social_timer
             save.append_event(social_consumed, "", "exit_social", animaltag,frame_counter,tick)
             pod_entry_flag=False
             #print("ex4")
             close_door(10)
             open_door(9)
-            social_consumed=int(round(time.time() * 1000))-social_timer
             social_flag=False
         if not pi.read(beaml[10]) and not pod_entry_flag: #enter unit5
             frame_counter=fc.tally()
