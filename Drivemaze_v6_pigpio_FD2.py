@@ -302,7 +302,7 @@ close_door(13)
 time.sleep(0.05)
 open_door(3)
 open_door(5)
-open_door(7)
+close_door(7)
 open_door(9)
 open_door(11)
 open_door(14)
@@ -462,37 +462,37 @@ while True:
             open_door(5)
             rec_wheel_flag=False
             wheel_flag=False
-        if not pi.read(beaml[6]) and not pod_entry_flag: #enter unit3
-            frame_counter=fc.tally()
-            tick = pi.get_current_tick()
-            save.append_event("", "", "enter_feed", animaltag,frame_counter,tick)
-            pod_entry_flag=True
-            #print("unit3")
-            close_door(7)
-            open_door(8)
-            food_timer=int(round(time.time() * 1000))
-            food_flag=True
-            pi.write(FED_in,0)
-            pellets=0
-            food_delay=[]
-        if food_flag and pi.read(FED_out): #rec delay to feed
-            frame_counter=fc.tally()
-            tick = pi.get_current_tick()
-            save.append_event("", "", "retrieve_pellet", animaltag,frame_counter,tick) 
-            food_delay=int(round(time.time() * 1000))-food_timer
-            #print("food delay was")
-            #print(food_delay)
-            food_flag=False
-            pellets=1
-        if not pi.read(beaml[7]) and pod_entry_flag: #exit
-            frame_counter=fc.tally()
-            tick = pi.get_current_tick()
-            save.append_event(pellets, food_delay, "exit_feed", animaltag,frame_counter,tick)
-            pod_entry_flag=False
-            #print("ex3")
-            close_door(8)
-            open_door(7)
-            pi.write(FED_in,1) #prep next pellet
+#         if not pi.read(beaml[6]) and not pod_entry_flag: #enter unit3
+#             frame_counter=fc.tally()
+#             tick = pi.get_current_tick()
+#             save.append_event("", "", "enter_feed", animaltag,frame_counter,tick)
+#             pod_entry_flag=True
+#             #print("unit3")
+#             close_door(7)
+#             open_door(8)
+#             food_timer=int(round(time.time() * 1000))
+#             food_flag=True
+#             pi.write(FED_in,0)
+#             pellets=0
+#             food_delay=[]
+#         if food_flag and pi.read(FED_out): #rec delay to feed
+#             frame_counter=fc.tally()
+#             tick = pi.get_current_tick()
+#             save.append_event("", "", "retrieve_pellet", animaltag,frame_counter,tick) 
+#             food_delay=int(round(time.time() * 1000))-food_timer
+#             #print("food delay was")
+#             #print(food_delay)
+#             food_flag=False
+#             pellets=1
+#         if not pi.read(beaml[7]) and pod_entry_flag: #exit
+#             frame_counter=fc.tally()
+#             tick = pi.get_current_tick()
+#             save.append_event(pellets, food_delay, "exit_feed", animaltag,frame_counter,tick)
+#             pod_entry_flag=False
+#             #print("ex3")
+#             close_door(8)
+#             open_door(7)
+#             pi.write(FED_in,1) #prep next pellet
         if not pi.read(beaml[9]) and not pod_entry_flag: #enter unit4            
             frame_counter=fc.tally()
             tick = pi.get_current_tick()
